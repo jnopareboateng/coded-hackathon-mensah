@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { ShoppingBag, Menu, X } from 'lucide-react'
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useCartStore } from '@/lib/store'
 
 const BASE = process.env.NEXT_PUBLIC_API_BASE ?? 'https://api-hackathon.codedematrixtech.com'
@@ -17,6 +17,17 @@ export function Navbar() {
   const { totalItems, openCart } = useCartStore()
   const count = totalItems()
   const [menuOpen, setMenuOpen] = useState(false)
+  const badgeRef = useRef<HTMLSpanElement>(null)
+  const prevCount = useRef(count)
+
+  useEffect(() => {
+    if (count > prevCount.current && badgeRef.current) {
+      badgeRef.current.classList.remove('cart-pop')
+      void badgeRef.current.offsetWidth
+      badgeRef.current.classList.add('cart-pop')
+    }
+    prevCount.current = count
+  }, [count])
 
   return (
     <header className="sticky top-0 z-50 bg-[#fafaf8]/95 backdrop-blur border-b border-stone-200">
@@ -57,7 +68,10 @@ export function Navbar() {
           >
             <ShoppingBag className="w-5 h-5" />
             {count > 0 && (
-              <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-stone-900 text-white text-[10px] flex items-center justify-center rounded-full">
+              <span
+                ref={badgeRef}
+                className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-stone-900 text-white text-[10px] flex items-center justify-center rounded-full"
+              >
                 {count}
               </span>
             )}

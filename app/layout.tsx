@@ -21,6 +21,19 @@ export const metadata: Metadata = {
   title: 'Mensah Atelier — Tailored Menswear',
   description:
     'Luxury tailored menswear from Mensah Atelier. Shop bespoke suits, shirts, and occasion wear.',
+  openGraph: {
+    title: 'Mensah Atelier — Tailored Menswear',
+    description: 'Precision-cut menswear for the man who understands that detail is everything.',
+    url: 'https://coded-hackathon-mensah-9bre.vercel.app',
+    siteName: 'Mensah Atelier',
+    locale: 'en_GH',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Mensah Atelier — Tailored Menswear',
+    description: 'Precision-cut menswear for the man who understands that detail is everything.',
+  },
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
