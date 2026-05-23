@@ -5,8 +5,8 @@ describe('CheckoutForm', () => {
   it('renders all fields', () => {
     render(<CheckoutForm onSubmit={jest.fn()} isLoading={false} />)
     expect(screen.getByPlaceholderText(/your name/i)).toBeInTheDocument()
-    expect(screen.getByPlaceholderText(/\+233/i)).toBeInTheDocument()
-    expect(screen.getByPlaceholderText(/size/i)).toBeInTheDocument()
+    expect(screen.getByPlaceholderText(/0241234567/i)).toBeInTheDocument()
+    expect(screen.getByPlaceholderText(/delivery/i)).toBeInTheDocument()
   })
 
   it('calls onSubmit with form values', () => {
