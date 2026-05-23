@@ -60,7 +60,7 @@ export const useCartStore = create<CartStore>()(
       storage: createJSONStorage(() =>
         typeof window !== 'undefined'
           ? sessionStorage
-          : ({ getItem: () => null, setItem: () => {}, removeItem: () => {} } as Storage)
+          : ({ getItem: () => null, setItem: () => {}, removeItem: () => {} } as unknown as Storage)
       ),
     }
   )
