@@ -10,7 +10,8 @@ interface Props {
 }
 
 export function WhatsAppLink({ basket, onClose, onClearCart }: Props) {
-  const waNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? '+233551856093'
+  const fallback = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? '+233551856093'
+  const waNumber = basket.merchant?.whatsapp_number || fallback
   const message = buildOrderMessage(basket)
   const href = buildWhatsAppLink(waNumber, message)
 

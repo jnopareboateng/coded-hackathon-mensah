@@ -13,11 +13,16 @@ export function buildWhatsAppLink(rawPhone: string, message: string): string {
 }
 
 export function buildOrderMessage(basket: BasketDetail): string {
-  const lines = basket.items.map(
-    (item) => `• ${item.name} x${item.qty} — ${formatPrice(item.price_minor * item.qty)}`
-  )
-  const parts = [`Hello! I'd like to place an order with Mensah:`]
+  const lines = basket.items.map((item) => {
+    const line = `• ${item.name} x${item.qty} — ${formatPrice(item.price_minor * item.qty)}`
+    return item.item_note ? `${line} (${item.item_note})` : line
+  })
+
+  const parts = [`Hello! I'd like to place an order with Mensah Atelier:`]
   if (basket.customer_name) parts.push(`Name: ${basket.customer_name}`)
-  parts.push('', ...lines, '', `Total: ${formatPrice(basket.total_minor)}`, `Ref: ${basket.id}`)
+  if (basket.customer_phone) parts.push(`Phone: ${basket.customer_phone}`)
+  parts.push('', ...lines, '', `Total: ${formatPrice(basket.total_minor)}`)
+  if (basket.customer_note) parts.push(`Note: ${basket.customer_note}`)
+  parts.push(`Ref: ${basket.id}`)
   return parts.join('\n')
 }

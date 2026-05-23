@@ -61,4 +61,22 @@ describe('buildOrderMessage', () => {
   it('includes customer name when present', () => {
     expect(buildOrderMessage(basket)).toContain('Kwame')
   })
+  it('includes customer phone when present', () => {
+    const msg = buildOrderMessage({ ...basket, customer_phone: '+233201234567' })
+    expect(msg).toContain('+233201234567')
+  })
+  it('includes customer note when present', () => {
+    const msg = buildOrderMessage({ ...basket, customer_note: 'Please deliver by Friday' })
+    expect(msg).toContain('Please deliver by Friday')
+  })
+  it('includes item_note inline with the item line', () => {
+    const items = [{ ...basket.items[0], item_note: 'Size 42' }]
+    const msg = buildOrderMessage({ ...basket, items })
+    expect(msg).toContain('Size 42')
+    expect(msg).toContain('Outfit 1 x2')
+  })
+  it('uses merchant whatsapp_number when building link', () => {
+    const link = buildWhatsAppLink('+233200000001', 'test')
+    expect(link).toContain('wa.me/233200000001')
+  })
 })

@@ -17,7 +17,7 @@ const TEAM_SLUG = process.env.NEXT_PUBLIC_TEAM_SLUG ?? 'mensah'
 const MERCHANT = process.env.NEXT_PUBLIC_MERCHANT_SLUG ?? 'mensah'
 
 export function CartDrawer() {
-  const { items, isOpen, closeCart, remove, updateQty, clear, totalMinor } = useCartStore()
+  const { items, isOpen, closeCart, remove, updateQty, updateNote, clear, totalMinor } = useCartStore()
   const [basket, setBasket] = useState<BasketDetail | null>(null)
   const [loading, setLoading] = useState(false)
   const { toast } = useToast()
@@ -96,6 +96,13 @@ export function CartDrawer() {
                         <X className="w-3 h-3" />
                       </button>
                     </div>
+                    <input
+                      type="text"
+                      value={item.item_note ?? ''}
+                      onChange={(e) => updateNote(item.item_id, e.target.value)}
+                      placeholder="Size or note…"
+                      className="mt-2 w-full text-xs border-b border-stone-200 focus:border-stone-900 outline-none py-1 bg-transparent text-stone-600 placeholder:text-stone-300 transition-colors"
+                    />
                   </div>
                 </div>
               ))}
