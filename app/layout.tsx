@@ -5,6 +5,7 @@ import { Providers } from './providers'
 import { Navbar } from '@/components/layout/Navbar'
 import { Footer } from '@/components/layout/Footer'
 import { CartDrawer } from '@/components/layout/CartDrawer'
+import { Toaster } from 'sonner'
 
 const serif = DM_Serif_Display({
   subsets: ['latin'],
@@ -31,6 +32,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <CartDrawer />
           <main>{children}</main>
           <Footer />
+          <Toaster position="bottom-right" />
         </Providers>
       </body>
     </html>
