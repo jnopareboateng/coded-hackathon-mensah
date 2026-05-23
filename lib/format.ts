@@ -17,10 +17,20 @@ export function buildOrderMessage(basket: BasketDetail): string {
 
   const itemLines = basket.items.map((item) => {
     const subtotal = formatPrice(item.price_minor * item.qty)
-    const line = item.qty > 1
+    const header = item.qty > 1
       ? `• ${item.name}\n  Qty: ${item.qty}  ·  ${subtotal}`
       : `• ${item.name}  ·  ${subtotal}`
-    return item.item_note ? `${line}\n  Note: ${item.item_note}` : line
+
+    if (!item.item_note) return header
+
+    // item_note is formatted as "Size: L\nnote text" — render each part indented
+    const details = item.item_note
+      .split('\n')
+      .filter(Boolean)
+      .map((l) => `  ${l}`)
+      .join('\n')
+
+    return `${header}\n${details}`
   })
 
   const parts: string[] = [

@@ -1,12 +1,17 @@
 import { create } from 'zustand'
 import { persist, createJSONStorage } from 'zustand/middleware'
 
+export const SIZES = ['S', 'M', 'L', 'XL', 'XXL', 'Custom'] as const
+export type Size = (typeof SIZES)[number]
+
 export interface CartItem {
   item_id: string
   name: string
   price_minor: number
   image_url: string
   qty: number
+  size?: Size | null
+  custom_size?: string | null
   item_note?: string | null
 }
 
@@ -16,6 +21,8 @@ interface CartStore {
   add: (item: CartItem) => void
   remove: (item_id: string) => void
   updateQty: (item_id: string, qty: number) => void
+  updateSize: (item_id: string, size: Size) => void
+  updateCustomSize: (item_id: string, custom: string) => void
   updateNote: (item_id: string, note: string) => void
   clear: () => void
   openCart: () => void
@@ -49,6 +56,18 @@ export const useCartStore = create<CartStore>()(
             qty <= 0
               ? state.items.filter((i) => i.item_id !== item_id)
               : state.items.map((i) => (i.item_id === item_id ? { ...i, qty } : i)),
+        })),
+      updateSize: (item_id, size) =>
+        set((state) => ({
+          items: state.items.map((i) =>
+            i.item_id === item_id ? { ...i, size, custom_size: size !== 'Custom' ? null : i.custom_size } : i
+          ),
+        })),
+      updateCustomSize: (item_id, custom) =>
+        set((state) => ({
+          items: state.items.map((i) =>
+            i.item_id === item_id ? { ...i, custom_size: custom || null } : i
+          ),
         })),
       updateNote: (item_id, note) =>
         set((state) => ({

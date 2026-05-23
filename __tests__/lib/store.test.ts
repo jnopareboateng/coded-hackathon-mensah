@@ -39,6 +39,23 @@ describe('remove', () => {
   })
 })
 
+describe('updateSize', () => {
+  it('sets size on an item', () => {
+    const { result } = renderHook(() => useCartStore())
+    act(() => result.current.add(item1))
+    act(() => result.current.updateSize('outfit-1', 'L'))
+    expect(result.current.items[0].size).toBe('L')
+  })
+  it('clears custom_size when switching away from Custom', () => {
+    const { result } = renderHook(() => useCartStore())
+    act(() => result.current.add(item1))
+    act(() => result.current.updateSize('outfit-1', 'Custom'))
+    act(() => result.current.updateCustomSize('outfit-1', '38" chest'))
+    act(() => result.current.updateSize('outfit-1', 'M'))
+    expect(result.current.items[0].custom_size).toBeNull()
+  })
+})
+
 describe('updateQty', () => {
   it('updates quantity', () => {
     const { result } = renderHook(() => useCartStore())
