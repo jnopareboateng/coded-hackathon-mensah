@@ -56,8 +56,11 @@ export function WhatsAppLink({ basket, onClose, onClearCart, onBack }: Props) {
         target="_blank"
         rel="noopener noreferrer"
         onClick={() => {
-          onClearCart()
-          onClose()
+          // Defer state updates so they don't block the navigation event (INP)
+          setTimeout(() => {
+            onClearCart()
+            onClose()
+          }, 0)
         }}
         className="flex items-center justify-center gap-2.5 w-full py-4 bg-[#25D366] text-white text-[11px] tracking-[0.25em] uppercase font-medium hover:bg-[#20b857] active:bg-[#1da851] transition-colors"
       >

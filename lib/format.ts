@@ -13,16 +13,39 @@ export function buildWhatsAppLink(rawPhone: string, message: string): string {
 }
 
 export function buildOrderMessage(basket: BasketDetail): string {
-  const lines = basket.items.map((item) => {
-    const line = `• ${item.name} x${item.qty} — ${formatPrice(item.price_minor * item.qty)}`
-    return item.item_note ? `${line} (${item.item_note})` : line
+  const sep = '—————————————'
+
+  const itemLines = basket.items.map((item) => {
+    const subtotal = formatPrice(item.price_minor * item.qty)
+    const line = item.qty > 1
+      ? `• ${item.name}\n  Qty: ${item.qty}  ·  ${subtotal}`
+      : `• ${item.name}  ·  ${subtotal}`
+    return item.item_note ? `${line}\n  Note: ${item.item_note}` : line
   })
 
-  const parts = [`Hello! I'd like to place an order with Mensah Atelier:`]
-  if (basket.customer_name) parts.push(`Name: ${basket.customer_name}`)
-  if (basket.customer_phone) parts.push(`Phone: ${basket.customer_phone}`)
-  parts.push('', ...lines, '', `Total: ${formatPrice(basket.total_minor)}`)
-  if (basket.customer_note) parts.push(`Note: ${basket.customer_note}`)
-  parts.push(`Ref: ${basket.id}`)
+  const parts: string[] = [
+    `Hello Mensah Atelier! 👋`,
+    `I'd like to place an order.`,
+    ``,
+    `*ORDER DETAILS*`,
+    sep,
+    ...itemLines,
+    sep,
+    `*Total: ${formatPrice(basket.total_minor)}*`,
+  ]
+
+  const hasCustomer = basket.customer_name || basket.customer_phone
+  if (hasCustomer) {
+    parts.push(``, `*CUSTOMER*`)
+    if (basket.customer_name) parts.push(`Name: ${basket.customer_name}`)
+    if (basket.customer_phone) parts.push(`Phone: ${basket.customer_phone}`)
+  }
+
+  if (basket.customer_note) {
+    parts.push(``, `*SPECIAL INSTRUCTIONS*`, basket.customer_note)
+  }
+
+  parts.push(``, `Ref: ${basket.id}`)
+
   return parts.join('\n')
 }
