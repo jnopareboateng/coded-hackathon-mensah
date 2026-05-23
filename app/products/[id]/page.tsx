@@ -43,6 +43,7 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
   const imageUrl = item.image_urls?.[0] ?? ''
 
   function handleAdd() {
+    if (!item) return
     add({
       item_id: item.id,
       name: item.name,
