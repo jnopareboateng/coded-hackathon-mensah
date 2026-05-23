@@ -69,7 +69,7 @@ export function CartDrawer() {
                 <div key={item.item_id} className="flex gap-3">
                   <div className="relative w-16 h-20 bg-stone-100 flex-shrink-0">
                     {item.image_url && (
-                      <Image src={item.image_url} alt={item.name} fill className="object-cover" />
+                      <Image src={item.image_url} alt={item.name} fill className="object-cover object-top" />
                     )}
                   </div>
                   <div className="flex-1 min-w-0">

@@ -69,7 +69,7 @@ export default function CampaignDetailPage({ params }: { params: Promise<{ id: s
                       src={item.image_url}
                       alt={item.name}
                       fill
-                      className="object-cover group-hover:scale-105 transition-transform duration-700"
+                      className="object-cover object-top group-hover:scale-105 transition-transform duration-700"
                       sizes="33vw"
                     />
                   )}
